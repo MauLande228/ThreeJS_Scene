@@ -14,7 +14,7 @@ camera.position.setZ(30);
 
 const particleCount = 5000;
 var last_time_activate = Date.now();
-
+var start = Date.now();
 
 /* TORUS PARTICLES */
 const geometry = new THREE.TorusGeometry(10, 3, 20, 100);
@@ -100,7 +100,7 @@ class Mover {
     }
 };
 
-var moversCount = 5000;
+var moversCount = 50000;
 var movers = [];
 var pointsGeometry = null;
 var pointsMaterial = null;
@@ -267,6 +267,37 @@ const particlesMesh = new THREE.Points(particles, particlesMaterial);
 scene.add(particlesMesh);*/
 
 
+/* SPHERE */
+var sphereGeometry = new THREE.IcosahedronGeometry( 10, 64 );
+var sphereMaterial = new THREE.ShaderMaterial({
+    vertexShader: document.getElementById( 'vertexShader' ).textContent,
+    fragmentShader: document.getElementById( 'fragmentShader' ).textContent,
+    uniforms: {
+        uTime: { value: 0 },
+        uSpeed: { value: 0.15 },
+        uNoiseDensity: { value: 2 },
+        uNoiseStrength: { value: 0.3 },
+        uFreq: { value: 3 },
+        uAmp: { value: 6 },
+        uHue: { value: 0.4 },
+        uOffset: { value: Math.PI * 2 },
+        red: { value: 0 },
+        green: { value: 0 },
+        blue: { value: 0 },
+        uAlpha: { value: 1.0 },
+      },
+      defines: {
+        PI: Math.PI
+      },
+      // wireframe: true,
+      // side: THREE.DoubleSide
+      transparent: true,
+});
+var sphereMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
+sphereMesh.position.setX(50);
+sphereMesh.rotation.set(0.4, 1.0, -0.4);
+scene.add(sphereMesh);
+
 /* LIGHT */
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(ambientLight);
@@ -322,6 +353,9 @@ function tick()
     updatePoints();
     torus.rotation.x = 0.5 * elapsedTime;
     torus.rotation.y = 0.5 * elapsedTime;
+//    sphereMaterial.uniforms[ 'uTime' ].value = .00025 * ( Date.now() - start );
+    sphereMaterial.uniforms[ 'uTime' ].value = elapsedTime;
+
     /*if(mouseX > 0)
     {
         particlesMesh.rotation.x = -mouseY * (bgTime * 0.00008);
