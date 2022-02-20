@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <title>Shaders</title>
+        <link rel="stylesheet" href="../css/main.css">
+    </head>
+    <body>
+      <div class="container">
+        <div class="content">
+          <h1>Otherwordly<br>shader effects.</h1>
+          <p class="subtitle">
+            Visualize shader effects on basic geometry and realistic 3D models.
+          </p>
+        </div>
+      </div>
+      
+      <canvas id="bg"></canvas>
+
+      <main>
+        <section>
+          <h1 class="card-title">Shaders</h1>
+          <p>Shaders are programs that run on the GPU. There are different types of shader,
+            but the ones that matter to us the most are vertex and fragment shaders.
+          </p>
+        </section>
+        <blockquote class="block">
+          <p>This site was made using Three JS and webGL</p>
+        </blockquote>
+        <section>
+          <h2 class="card-title-2">Manifesto</h2>
+          <p>
+            Vertex shaders handle the processiong of individual vertices. 
+            The vertex shader will be executed roughly once for every vertex in the stream
+          </p>
+  
+          <p>
+            For each sample of the pixels covered by a primitive, a "fragment" is generated. 
+            Each fragment has a Window Space position, a few other values, and it contains 
+            all of the interpolated per-vertex output values from the last Vertex Processing stage.
+          </p>
+  
+        </section>
+
+        <blockquote class="block">
+          <p>
+            Random is good, 
+            But also chaotic and not very  
+            appealing.
+          </p>
+        </blockquote>
+
+        <section class="left">
+          <h2 class="card-title-2">Primitves in the scene</h2>
+
+          <h3 class="card-title-3">Torus</h3>
+          <p>
+            The first geometry we can see is known as a torus. Its geometry is part of the
+            Three JS library, so it is only necesary to especify de material and create the
+            mesh (geometry + material). The material is of type Points material. It means
+            that instead of rendering the object in triangle list mode it is going to use
+            a point list topology (draw a point per vertex).
+          </p>
+          <h3 class="card-title-3">Spheres</h3>
+          <p>
+            The spheres' geometry is also part of Three JS. We are also allowed to define
+            our own materials by specifying them in a language called glsl. We needed a 
+            vertex shader to modifiy the vertices of the sphere. In order to do so without
+            distorting the model we used a Perlin Noise algorithm to calculate the vertices.
+            To create the effect of waves we used a rotate function on the positions of the
+            vertices after going through the perlin noise process. For the fragment shader
+            we generated the color of each fragment based on the distortion level and a cosine
+            math function.
+          </p>
+          <h3 class="card-title-3">3D models</h3>
+          <p>
+            The models were loaded in using the GLTF loader. 
+            glTF is a standard file format for three-dimensional scenes and models
+          </p>
+          <h3 class="card-title-3">Particle system</h3>
+          <p>
+            The particle system is defined with a buffer geometry. This type of geometry
+            allows you to define whatever primitive you want. We also used the PointsMaterial
+            for this one. The positon of the vertices, in this case particles, is updated
+            every frame. The program currently has 20,000 particles. They are trying to simulate 
+            some kind of gravitational movement.
+          </p>
+        </section>
+        <blockquote class="block">
+          <p>Thanks for watching!</p>
+        </blockquote>
+      </main>
+
+      <script type="module" src="../js/graphcis.js"></script>
+    </body>
+</html>
