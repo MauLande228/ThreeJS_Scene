@@ -2,10 +2,141 @@
   margin: 0;
   padding: 0;
 }
+body {
+  height: 100vh;
+  color: white;
+}
 
 canvas {
   position: fixed;
   top: 0;
   left: 0;
   outline: none;
+}
+
+.container {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 75%;
+  display: grid;
+  place-content: center;
+}
+
+.content {
+  display: grid;
+  gap: 2em;
+  width: 100%;
+  padding-top: 3em;
+  position: relative;
+}
+
+.content:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+h1{
+  font-size: 4rem;
+  width: 50vw;
+  line-height: 97%;
+  text-align: center;
+}
+
+h1, .subtitle{
+  text-align: center;
+}
+
+.line-container{
+  display: grid;
+  height: 130.825px;
+  opacity: .5;
+  position: absolute;
+  right: 0;
+  bottom: -1rem;
+  left: 0;
+  width: 2px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.line{
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  border-left: 1px solid white;
+  transform: scaleY(1);
+}
+
+.scroll-down-text{
+  position: relative;
+  display: grid;
+  top: 11rem;
+  font-size: 14px;
+}
+
+main {
+  width: 100vw;
+  color: white;
+  z-index: 99;
+  position: absolute;
+  width: 100%;
+  margin: 0px auto;
+  margin-top: 620px;
+  padding-bottom: 50px;
+  /*padding: 820px 0px;*/
+  
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.card-title-1, .card-title-2, .card-title-3, .block  {
+  font-family: elevon, sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+header {
+  background: var(--dark-bg);
+  grid-column: 7 / span 5;
+  font-size: 2.5rem;
+  padding: 2rem;
+  margin-bottom: var(--spacing);
+}
+
+section {
+  grid-column: 7 / 12;
+  padding: 1rem;
+  background: var(--dark-bg);
+  font-size: 1.25rem;
+  line-height: 1.5;
+  margin-bottom: var(--spacing);
+  text-align: right;
+}
+
+blockquote {
+  margin: 0;
+  padding: 0;
+  grid-column: 7 / span 5;
+  margin-bottom: var(--spacing);
+  text-align: right;
+}
+
+blockquote p {
+  color: black;
+  background-color: white;
+  font-size: 4rem;
+  display: inline;
+  line-height: 1;
+}
+
+.left {
+  grid-column: 7 / 12;
 }

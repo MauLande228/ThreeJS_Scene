@@ -12,9 +12,9 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-camera.position.setZ(30);
+//camera.position.setZ(30);
 
-const particleCount = 5000;
+const particleCount = 20000;
 var last_time_activate = Date.now();
 var start = Date.now();
 
@@ -23,6 +23,7 @@ const geometry = new THREE.TorusGeometry(10, 3, 20, 100);
 const material = new THREE.PointsMaterial({ 
     size: 0.005});
 const torus  =new THREE.Points(geometry, material);
+torus.position.setZ(-30);
 scene.add(torus);
 
 
@@ -223,7 +224,7 @@ var updatePoints = function()
 };
 
 
-/* SPHERE */
+/* MAIN SPHERE */
 var sphereGeometry = new THREE.IcosahedronGeometry( 10, 64 );
 var sphereMaterial = new THREE.ShaderMaterial({
     vertexShader: RotatingSphereVS,
@@ -250,23 +251,82 @@ var sphereMaterial = new THREE.ShaderMaterial({
       transparent: true,
 });
 var sphereMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
-sphereMesh.position.setX(50);
+//sphereMesh.position.setY(-50);
+sphereMesh.position.setX(45);
+sphereMesh.position.setZ(85);
+
 sphereMesh.rotation.set(0.4, 1.0, -0.4);
 scene.add(sphereMesh);
+
+/* SECOND SPHERE */
+var sSphereGeometry = new THREE.IcosahedronGeometry( 5, 64 );
+var sSphereMaterial = new THREE.ShaderMaterial({
+    vertexShader: RotatingSphereVS,
+    fragmentShader: RotatingSphereFS,
+    uniforms: {
+        uTime: { value: 0 },
+        uSpeed: { value: 0.5 },
+        uNoiseDensity: { value: 3 },
+        uNoiseStrength: { value: 0.5 },
+        uFreq: { value: 3 },
+        uAmp: { value: 6 },
+        uHue: { value: 0.9 },
+        uOffset: { value: Math.PI * 2 },
+        red: { value: 0 },
+        green: { value: 0 },
+        blue: { value: 0 },
+        uAlpha: { value: 1.0 },
+      },
+      defines: {
+        PI: Math.PI
+      },
+      // wireframe: true,
+      // side: THREE.DoubleSide
+      transparent: true,
+});
+var sSphereMesh = new THREE.Mesh(sSphereGeometry, sSphereMaterial);
+//sSphereMesh.position.setY(-53);
+sSphereMesh.position.setX(25);
+sSphereMesh.position.setZ(47);
+sSphereMesh.rotation.set(0.4, 1.0, -0.4);
+scene.add(sSphereMesh);
+
+/* 3D MODELS */
+var bust = null;
+const loaderBust = new GLTFLoader();
+loaderBust.load(
+    '../MarbleBustGL/marble_bust_01_4k.gltf',
+    function(gltf){
+        //scene.add(gltf.scene);
+        bust = gltf.scene.children[0];
+        bust.scale.set(15, 15, 15);
+        bust.position.setX(91);
+        bust.position.setY(-4)
+        bust.position.setZ(170);
+        scene.add(bust);
+    },
+    function ( xhr ) {
+		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+	},
+	// called when loading has errors
+	function ( error ) {
+		console.log( 'An error happened' );
+	}
+)
 
 /* LIGHT */
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(ambientLight);
 
 const pointLight = new THREE.PointLight(0xffffff, 0.8);
-pointLight.position.set(25, 50, 25);
+pointLight.position.set(100, 50, 200);
 scene.add(pointLight);
 
 const PointLightHelper = new THREE.PointLightHelper(pointLight);
 const gridHelper = new THREE.GridHelper(200, 50);
-scene.add(gridHelper, PointLightHelper);
+//scene.add(gridHelper, PointLightHelper);
 
-const controls = new OrbitControls(camera, renderer.domElement);
+//const controls = new OrbitControls(camera, renderer.domElement);
 
 
 
@@ -281,7 +341,6 @@ function animateParticles(event)
     mouseY = event.clientY;
 }
 
-
 window.addEventListener('resize', onWindowResize);
 function onWindowResize()
 {
@@ -290,6 +349,17 @@ function onWindowResize()
 
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
+
+function moveCamera()
+{
+    const t = document.body.getBoundingClientRect().top;
+
+    camera.position.z = t * -0.15;
+    camera.position.x = t * -0.08;
+    camera.position.y = t * -0.0002;
+}
+
+document.body.onscroll = moveCamera;
 
 const clock = new THREE.Clock();
 function tick()
@@ -311,13 +381,15 @@ function tick()
     torus.rotation.y = 0.5 * elapsedTime;
 //    sphereMaterial.uniforms[ 'uTime' ].value = .00025 * ( Date.now() - start );
     sphereMaterial.uniforms[ 'uTime' ].value = elapsedTime;
+    sSphereMaterial.uniforms[ 'uTime' ].value = elapsedTime;
 
+    bust.rotation.y = 0.5 * elapsedTime;
     /*if(mouseX > 0)
     {
         particlesMesh.rotation.x = -mouseY * (bgTime * 0.00008);
         particlesMesh.rotation.y = mouseX * (bgTime * 0.00008);
     }*/
-    controls.update();
+    //controls.update();
     renderer.render(scene, camera);
 }
 buildPoints();

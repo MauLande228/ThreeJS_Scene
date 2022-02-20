@@ -189,10 +189,6 @@ uniform float uFreq;
 uniform float uAmp;
 uniform float uOffset;
 
-#pragma glslify: noise = require(glsl-noise/classic/3d)
-#pragma glslify: pnoise = require(glsl-noise/periodic/3d)
-#pragma glslify: rotateY = require(glsl-rotate/rotateY)
-
 float map(float value, float inMin, float inMax, float outMin, float outMax) {
     return outMin + (outMax - outMin) * (value - inMin) / (inMax - inMin);
 }
