@@ -1,6 +1,8 @@
 import * as THREE from 'https://cdn.skypack.dev/three@0.136.0';
 import { OrbitControls } from 'https://cdn.skypack.dev/three@0.136.0/examples/jsm/controls/OrbitControls.js';
 import {GLTFLoader} from 'https://cdn.skypack.dev/three@0.136.0/examples/jsm/loaders/GLTFLoader.js'
+import RotatingSphereVS from '../shaders/RotatingSphereVS.js';
+import RotatingSphereFS from '../shaders/RotatingSphereFS.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
@@ -80,18 +82,6 @@ class Mover {
     applyForce(vector) {
         this.acceleration.add(vector);
     }
-    /*applyFriction() {
-        var friction = Force.friction(this.acceleration, 0.1);
-        this.applyForce(friction);
-    }
-    applyDragForce(value) {
-        var drag = Force.drag(this.acceleration, value);
-        this.applyForce(drag);
-    }
-    hook(restLength, k) {
-        var force = Force.hook(this.velocity, this.anchor, restLength, k);
-        this.applyForce(force);
-    }*/
     activate() {
         this.isActive = true;
     }
@@ -232,46 +222,12 @@ var updatePoints = function()
     points2.geometry.computeBoundingSphere();
 };
 
-/*const particles = new THREE.BufferGeometry();
-const particlesMaterial = new THREE.PointsMaterial({ 
-    size: 0.1,
-    vertexColors: true});
-const positionArray = [];
-const colorsArray = [];
-const color = new THREE.Color();
-
-const n = 1000, n2 = n / 2; 
-
-for(let i = 0; i < particleCount; i++)
-{
-    //positions
-    const x = Math.random() * n - n2;
-    const y = Math.random() * n - n2;
-    const z = Math.random() * n - n2;
-    positionArray.push(x, y, z);
-
-    //colors
-    const vx = (x / n) + 0.5;
-    const vy = (y / n) + 0.5;
-    const vz = (z / n) + 0.5;
-
-    color.setRGB(vx, vy, vz);
-    colorsArray.push(color.r, color.g, color.b);
-}
-
-particles.setAttribute('position', new THREE.Float32BufferAttribute(positionArray, 3));
-particles.setAttribute('color', new THREE.Float32BufferAttribute(colorsArray, 3));
-particles.computeBoundingSphere();
-
-const particlesMesh = new THREE.Points(particles, particlesMaterial);
-scene.add(particlesMesh);*/
-
 
 /* SPHERE */
 var sphereGeometry = new THREE.IcosahedronGeometry( 10, 64 );
 var sphereMaterial = new THREE.ShaderMaterial({
-    vertexShader: document.getElementById( 'vertexShader' ).textContent,
-    fragmentShader: document.getElementById( 'fragmentShader' ).textContent,
+    vertexShader: RotatingSphereVS,
+    fragmentShader: RotatingSphereFS,
     uniforms: {
         uTime: { value: 0 },
         uSpeed: { value: 0.15 },
