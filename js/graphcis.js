@@ -12,7 +12,6 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-//camera.position.setZ(30);
 
 const particleCount = 20000;
 var last_time_activate = Date.now();
@@ -124,8 +123,6 @@ var buildPoints = function()
     pointsMaterial = new THREE.PointsMaterial({
         color: 0x77ffaa,
         size: 0.01,
-        //tranparent: true,
-        //opacity: 0.5,
         depthTest: false,
         blending: THREE.AdditiveBlending
     });
@@ -134,8 +131,6 @@ var buildPoints = function()
     pointsMaterial2 = new THREE.PointsMaterial({
         color: 0x77ffaa,
         size: 0.01,
-        //tranparent: true,
-        //opacity: 0.5,
         depthTest: false,
         blending: THREE.AdditiveBlending
     });
@@ -155,12 +150,10 @@ var buildPoints = function()
         if(i % 2 === 0)
         {
             vertices.push(mover.position.x, mover.position.y, mover.position.z);
-            //pointsGeometry.vertices.push(mover.positon);
         }
         else
         {
             vertices2.push(mover.position.x, mover.position.y, mover.position.z);
-            //pointsGeometry2.vertices.push(mover.positon);
         }
     }
 
@@ -210,13 +203,11 @@ var updatePoints = function()
             pointsVertices2.push(mover.position.x, mover.position.y, mover.position.z);
         }
     }
-    //points.geometry.vertices = pointsVertices;
     pointsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(pointsVertices, 3));
     points.geometry.attributes.position.needsUpdate = true;
     points.geometry.computeBoundingBox();
     points.geometry.computeBoundingSphere();
 
-    //points2.geometry.vertices = pointsVertices2;
     pointsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(pointsVertices2, 3));
     points2.geometry.attributes.position.needsUpdate = true;
     points2.geometry.computeBoundingBox();
@@ -246,12 +237,9 @@ var sphereMaterial = new THREE.ShaderMaterial({
       defines: {
         PI: Math.PI
       },
-      // wireframe: true,
-      // side: THREE.DoubleSide
       transparent: true,
 });
 var sphereMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
-//sphereMesh.position.setY(-50);
 sphereMesh.position.setX(45);
 sphereMesh.position.setZ(85);
 
@@ -280,12 +268,9 @@ var sSphereMaterial = new THREE.ShaderMaterial({
       defines: {
         PI: Math.PI
       },
-      // wireframe: true,
-      // side: THREE.DoubleSide
       transparent: true,
 });
 var sSphereMesh = new THREE.Mesh(sSphereGeometry, sSphereMaterial);
-//sSphereMesh.position.setY(-53);
 sSphereMesh.position.setX(25);
 sSphereMesh.position.setZ(47);
 sSphereMesh.rotation.set(0.4, 1.0, -0.4);
@@ -297,7 +282,6 @@ const loaderBust = new GLTFLoader();
 loaderBust.load(
     '../MarbleBustGL/marble_bust_01_4k.gltf',
     function(gltf){
-        //scene.add(gltf.scene);
         bust = gltf.scene.children[0];
         bust.scale.set(15, 15, 15);
         bust.position.setX(91);
@@ -322,8 +306,8 @@ const pointLight = new THREE.PointLight(0xffffff, 0.8);
 pointLight.position.set(100, 50, 200);
 scene.add(pointLight);
 
-const PointLightHelper = new THREE.PointLightHelper(pointLight);
-const gridHelper = new THREE.GridHelper(200, 50);
+//const PointLightHelper = new THREE.PointLightHelper(pointLight);
+//const gridHelper = new THREE.GridHelper(200, 50);
 //scene.add(gridHelper, PointLightHelper);
 
 //const controls = new OrbitControls(camera, renderer.domElement);
@@ -366,7 +350,6 @@ function tick()
 {
     const elapsedTime = clock.getElapsedTime();
     var now = Date.now();
-    var bgTime = elapsedTime;
 
     requestAnimationFrame(tick);
 
@@ -375,20 +358,15 @@ function tick()
         last_time_activate = Date.now();
     }
 
-    //particlesMesh.rotation.y = -0.1*elapsedTime;
     updatePoints();
     torus.rotation.x = 0.5 * elapsedTime;
     torus.rotation.y = 0.5 * elapsedTime;
-//    sphereMaterial.uniforms[ 'uTime' ].value = .00025 * ( Date.now() - start );
+
     sphereMaterial.uniforms[ 'uTime' ].value = elapsedTime;
     sSphereMaterial.uniforms[ 'uTime' ].value = elapsedTime;
 
     bust.rotation.y = 0.5 * elapsedTime;
-    /*if(mouseX > 0)
-    {
-        particlesMesh.rotation.x = -mouseY * (bgTime * 0.00008);
-        particlesMesh.rotation.y = mouseX * (bgTime * 0.00008);
-    }*/
+
     //controls.update();
     renderer.render(scene, camera);
 }
